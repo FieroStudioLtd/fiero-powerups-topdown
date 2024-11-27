@@ -1,0 +1,4 @@
+@PowerUp
+struct TopDownCharacterMovement {
+	speed: f32 = 5.0
+}

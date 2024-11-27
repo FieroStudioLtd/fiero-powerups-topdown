@@ -1,0 +1,25 @@
+@PowerUp
+struct TopDownPlayerControls {
+	move_left: Key = Key.A
+	move_right: Key = Key.D
+	move_up: Key = Key.W
+	move_down: Key = Key.S
+}
+
+@Task
+fn update_player_movement(
+	controls: &TopDownPlayerControls,
+	movement: &TopDownCharacterMovement,
+	transform: &Transform,
+	input: &InputState,
+	step: &Timestep,
+) {
+	let direction = Vec2(
+		x = input.position_axis(controls.move_left, controls.move_right),
+		y = input.position_axis(controls.move_down, controls.move_up),
+	).normalise_or_zero()
+
+	let velocity = direction * movement.speed
+
+	transform.position += velocity * step.as_seconds()
+}
