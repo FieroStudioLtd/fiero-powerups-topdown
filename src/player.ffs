@@ -11,6 +11,7 @@ fn update_player_movement(
 	controls: &TopDownPlayerControls,
 	movement: &TopDownCharacterMovement,
 	transform: &Transform,
+	sprite: &Sprite,
 	input: &InputState,
 	step: &Timestep,
 ) {
@@ -20,6 +21,12 @@ fn update_player_movement(
 	).normalise_or_zero()
 
 	let velocity = direction * movement.speed
+
+	if direction.nonzero() {
+		sprite.colour = Colour(1, 0, 0, 1)
+	} else {
+		sprite.colour = Colour(1, 1, 1, 1)
+	}
 
 	transform.position += velocity * step.as_seconds()
 }
