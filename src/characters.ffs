@@ -1,4 +1,25 @@
+@Component
+struct CharacterMovementState {
+	desired_direction: Vec2
+}
+
 @PowerUp
+@Requires(CharacterController)
+@Requires(CharacterMovementState)
 struct TopDownCharacterMovement {
 	speed: f32 = 5.0
+
+	move_left: AnimationName
+	move_right: AnimationName
+	move_up: AnimationName
+	move_down: AnimationName
+}
+
+@Task
+fn update_character_movement(
+	movement_state: &CharacterMovementState,
+	character: &TopDownCharacterMovement,
+	controller: &CharacterController,
+) {
+	controller.desired_velocity = movement_state.desired_direction * character.speed
 }

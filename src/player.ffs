@@ -1,5 +1,4 @@
 @PowerUp
-@Requires(CharacterController)
 struct TopDownPlayerControls {
 	move_left: Key = Key.A
 	move_right: Key = Key.D
@@ -10,8 +9,7 @@ struct TopDownPlayerControls {
 @Task
 fn update_player_movement(
 	controls: &TopDownPlayerControls,
-	movement: &TopDownCharacterMovement,
-	controller: &CharacterController,
+	movement_state: &CharacterMovementState,
 	input: &InputState,
 ) {
 	let direction = Vec2(
@@ -19,5 +17,5 @@ fn update_player_movement(
 		y = input.position_axis(controls.move_down, controls.move_up),
 	).normalise_or_zero()
 
-	controller.desired_velocity = direction * movement.speed
+	movement_state.desired_direction = direction
 }
