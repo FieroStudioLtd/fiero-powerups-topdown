@@ -1,4 +1,5 @@
 @PowerUp
+@Requires(CharacterController)
 struct TopDownPlayerControls {
 	move_left: Key = Key.A
 	move_right: Key = Key.D
@@ -10,23 +11,13 @@ struct TopDownPlayerControls {
 fn update_player_movement(
 	controls: &TopDownPlayerControls,
 	movement: &TopDownCharacterMovement,
-	transform: &Transform,
-	sprite: &Sprite,
+	controller: &CharacterController,
 	input: &InputState,
-	step: &Timestep,
 ) {
 	let direction = Vec2(
 		x = input.position_axis(controls.move_left, controls.move_right),
 		y = input.position_axis(controls.move_down, controls.move_up),
 	).normalise_or_zero()
 
-	let velocity = direction * movement.speed
-
-	if direction.nonzero() {
-		sprite.colour = Colour(1, 0, 0, 1)
-	} else {
-		sprite.colour = Colour(1, 1, 1, 1)
-	}
-
-	transform.position += velocity * step.as_seconds()
+	controller.desired_velocity = direction * movement.speed
 }
