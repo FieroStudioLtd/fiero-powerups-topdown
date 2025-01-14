@@ -9,10 +9,15 @@ struct CharacterMovementState {
 struct TopDownCharacterMovement {
 	speed: f32 = 5.0
 
-	move_left: AnimationName
-	move_right: AnimationName
-	move_up: AnimationName
-	move_down: AnimationName
+	anim_idle: AnimationName
+	anim_move_left: AnimationName
+	anim_move_right: AnimationName
+	anim_move_up: AnimationName
+	anim_move_up_right: AnimationName
+	anim_move_up_left: AnimationName
+	anim_move_down: AnimationName
+	anim_move_down_right: AnimationName
+	anim_move_down_left: AnimationName
 }
 
 @Task
@@ -20,6 +25,37 @@ fn update_character_movement(
 	movement_state: &CharacterMovementState,
 	character: &TopDownCharacterMovement,
 	controller: &CharacterController,
+	flipbook: &Flipbook,
 ) {
 	controller.desired_velocity = movement_state.desired_direction * character.speed
+
+	if movement_state.desired_direction.square_magnitude() == 0 {
+		flipbook.start(character.anim_idle, AnimationParams())
+	} else {
+		let direction = movement_state.desired_direction.as_angle().to_compass_direction()
+		if direction == CompassDirection.North {
+			flipbook.start(character.anim_move_up, AnimationParams())
+		}
+		if direction == CompassDirection.NorthEast {
+			flipbook.start(character.anim_move_up_right, AnimationParams())
+		}
+		if direction == CompassDirection.NorthWest {
+			flipbook.start(character.anim_move_up_left, AnimationParams())
+		}
+		if direction == CompassDirection.East {
+			flipbook.start(character.anim_move_right, AnimationParams())
+		}
+		if direction == CompassDirection.South {
+			flipbook.start(character.anim_move_down, AnimationParams())
+		}
+		if direction == CompassDirection.SouthEast {
+			flipbook.start(character.anim_move_down_right, AnimationParams())
+		}
+		if direction == CompassDirection.SouthWest {
+			flipbook.start(character.anim_move_down_left, AnimationParams())
+		}
+		if direction == CompassDirection.West {
+			flipbook.start(character.anim_move_left, AnimationParams())
+		}
+	}
 }
