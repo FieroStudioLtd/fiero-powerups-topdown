@@ -17,5 +17,9 @@ fn update_player_movement(
 		y = input.position_axis(controls.move_down, controls.move_up),
 	).normalise_or_zero()
 
-	movement_state.desired_direction = direction
+	let moving = direction.nonzero()
+	if moving {
+		movement_state.desired_direction = direction
+	}
+	movement_state.moving = moving
 }
