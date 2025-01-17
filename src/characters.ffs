@@ -75,10 +75,7 @@ fn update_character_movement(
 	if movement_state.moving {
 		flipbook.start(anims.move, AnimationParams())
 		controller.desired_velocity = movement_state.desired_direction * character.speed
-	}
-
-	// FIXME: figure out why else conditions aren't triggering properly
-	if !movement_state.moving {
+	} else {
 		flipbook.start(anims.idle, AnimationParams())
 		controller.desired_velocity = Vec2(0, 0)
 	}
