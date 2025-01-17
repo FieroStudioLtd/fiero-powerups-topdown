@@ -58,6 +58,8 @@ struct TopDownCharacterMovement {
 			return DirectionAnims(self.anim_idle_left, self.anim_move_left)
 		}
 
+		// FIXME: this case shouldn't get hit, but we don't have an exhaustive switch/match expression in ffs yet
+		// so let's keep the type-checker happy :)
 		DirectionAnims(self.anim_idle_down, self.anim_idle_up)
 	}
 }
